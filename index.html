@@ -315,12 +315,17 @@
       const entries = JSON.parse(localStorage.getItem('signups') || '[]');
       entries.push({ email, shop, ts: new Date().toISOString() });
       localStorage.setItem('signups', JSON.stringify(entries));
-      // Submit to Formspree (endpoint to be configured)
+      // Submit to formsubmit.co (no account required, activates on first use)
       try {
-        const res = await fetch('https://formspree.io/f/ENDPOINT', {
+        await fetch('https://formsubmit.co/ajax/hello@coreloopworks.com', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, shop_url: shop })
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({
+            email,
+            shop_url: shop,
+            _subject: '【競合ウォッチ】新規登録: ' + email,
+            _captcha: 'false'
+          })
         });
       } catch(err) {}
       // Show thank you
