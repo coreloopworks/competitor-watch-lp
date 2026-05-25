@@ -112,9 +112,9 @@
 <!-- HERO -->
 <section class="hero">
   <div class="hero-badge">🔔 楽天市場出品者向け 競合監視サービス</div>
-  <h1>競合が値下げした。<br>あなたが気づいたのは<em>3日後</em>。</h1>
-  <p class="hero-sub">競合ショップの価格変更・新商品・セール情報を<br>毎週月曜朝8時に自動でレポート配信。<br>もう手動チェックに2〜3時間かけなくていい。</p>
-  <a href="#form" class="cta-primary">7日間無料で試してみる →</a>
+  <h1>その3日間で、<br>あなたのショップは<em>いくら失った</em>か。</h1>
+  <p class="hero-sub">競合の値下げに気づくのが平均<strong>3日遅れ</strong>。月商300万なら、その損失は月<strong>数万円規模</strong>になる。<br>競合ウォッチは、競合の動きを毎日自動監視して毎週月曜に届ける。<br>登録3分・クレジットカード不要。</p>
+  <a href="#form" class="cta-primary">7日間無料で競合監視を始める →</a>
   <p class="cta-note">クレジットカード不要 ・ いつでもキャンセル可</p>
 </section>
 
@@ -209,6 +209,30 @@
   </div>
 </section>
 
+
+<!-- ROI -->
+<section class="roi" style="padding:64px 24px;background:#fff8f8;border-top:1px solid #ffd0d0;border-bottom:1px solid #ffd0d0;">
+  <div style="max-width:640px;margin:0 auto;text-align:center;">
+    <div class="section-label">費用対効果</div>
+    <h2 class="section-title">¥2,980で、月<em style="color:#e60012;">¥13,000以上</em>を取り戻す</h2>
+    <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center;margin-top:32px;">
+      <div style="background:#fff;border:1px solid #e8e8e8;border-radius:12px;padding:24px;">
+        <div style="font-size:13px;color:#888;margin-bottom:8px;">手動チェックのコスト</div>
+        <div style="font-size:28px;font-weight:800;color:#1a1a1a;">月¥16,000〜</div>
+        <div style="font-size:13px;color:#666;margin-top:8px;line-height:1.6;">週2〜3時間 × 4週<br>= 月8〜12時間<br>（時給¥2,000換算）</div>
+      </div>
+      <div style="font-size:32px;font-weight:800;color:#e60012;">→</div>
+      <div style="background:#e60012;border-radius:12px;padding:24px;color:#fff;">
+        <div style="font-size:13px;opacity:.85;margin-bottom:8px;">競合ウォッチ Starter</div>
+        <div style="font-size:28px;font-weight:800;">月¥2,980</div>
+        <div style="font-size:13px;opacity:.85;margin-top:8px;line-height:1.6;">削減コスト<br>月¥13,000以上</div>
+      </div>
+    </div>
+    <p style="margin-top:24px;font-size:14px;color:#666;line-height:1.8;">さらに、競合の値下げを<strong>1日早く</strong>察知できれば<br>月商300万のショップで<strong>数万円規模の機会損失</strong>を防げます。</p>
+    <a href="#form" class="cta-primary" style="display:inline-block;margin-top:24px;">7日間無料で試す →</a>
+  </div>
+</section>
+
 <!-- PRICING -->
 <section class="pricing">
   <div class="section-label">料金</div>
@@ -253,6 +277,8 @@
     <h2>まず7日間、無料で試してみる</h2>
     <p>メールアドレスを登録するだけでベータ版にご招待します。クレジットカードは不要です。</p>
     <form class="form" id="signup-form" name="competitor-watch-signup" data-netlify="true" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="competitor-watch-signup">
+      <input type="hidden" name="bot-field">
       <input type="email" name="email" placeholder="メールアドレスを入力" required>
       <input type="text" name="shop_url" placeholder="あなたの楽天ショップURL（任意）">
       <button type="submit">無料トライアルを始める →</button>
@@ -287,6 +313,14 @@
       <div class="faq-q">Q. 競合として登録できるのはどんなショップですか？</div>
       <div class="faq-a">A. 楽天市場に出店しているショップであれば登録可能です。ショップURLまたはショップ名で登録できます。</div>
     </div>
+    <div class="faq-item">
+      <div class="faq-q">Q. 登録してからいつ使えるようになりますか？</div>
+      <div class="faq-a">A. メールアドレス登録後、24時間以内にベータ版へのご招待メールをお送りします。招待後すぐに競合ショップの登録を開始できます。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Q. 価格変動以外の情報も取れますか？</div>
+      <div class="faq-a">A. はい。価格変動に加えて、新商品追加・セール開始・在庫切れも検知します。競合の動きを多角的に把握できます。</div>
+    </div>
   </div>
 </section>
 
@@ -304,36 +338,39 @@
     });
   });
 
-  // Form submission
+  // Form submission — Netlify Forms AJAX
   const form = document.getElementById('signup-form');
   if (form) {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const email = form.querySelector('input[type="email"]').value;
-      const shop = form.querySelector('input[name="shop_url"]').value;
-      // Store in localStorage as fallback
-      const entries = JSON.parse(localStorage.getItem('signups') || '[]');
-      entries.push({ email, shop, ts: new Date().toISOString() });
-      localStorage.setItem('signups', JSON.stringify(entries));
-      // Submit to formsubmit.co (no account required, activates on first use)
+      const btn = form.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      btn.textContent = '送信中...';
+
+      const data = new URLSearchParams();
+      new FormData(form).forEach((v, k) => data.append(k, v));
+
       try {
-        await fetch('https://formsubmit.co/ajax/hello@coreloopworks.com', {
+        const res = await fetch('/', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify({
-            email,
-            shop_url: shop,
-            _subject: '【競合ウォッチ】新規登録: ' + email,
-            _captcha: 'false'
-          })
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: data.toString()
         });
-      } catch(err) {}
-      // Show thank you
-      form.innerHTML = '<div style="text-align:center;padding:24px;"><p style="font-size:20px;font-weight:700;color:#e60012;">✅ 登録ありがとうございます！</p><p style="margin-top:8px;color:#555;">招待メールをお送りします。しばらくお待ちください。</p></div>';
+        if (res.ok) {
+          form.innerHTML = '<div style="text-align:center;padding:24px;"><p style="font-size:20px;font-weight:700;color:#e60012;">✅ 登録ありがとうございます！</p><p style="margin-top:8px;color:#555;">招待メールをお送りします。しばらくお待ちください。</p></div>';
+        } else {
+          btn.disabled = false;
+          btn.textContent = '無料トライアルを始める →';
+          alert('送信に失敗しました。お手数ですが hello@coreloopworks.com までご連絡ください。');
+        }
+      } catch(err) {
+        btn.disabled = false;
+        btn.textContent = '無料トライアルを始める →';
+        alert('送信に失敗しました。お手数ですが hello@coreloopworks.com までご連絡ください。');
+      }
     });
   }
 </script>
 
 </body>
 </html>
-<!-- Email form handler placeholder - will be replaced with Formspree endpoint -->
